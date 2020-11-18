@@ -2,6 +2,7 @@ package com.example.stopwatch
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import kotlin.concurrent.timer
@@ -37,20 +38,48 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun reset() {
+        timerTask?.cancel()
         if (checkRunning)
             checkRunning = false
 
         time = 0
-        tv_hour.text = "00"
-        tv_min.text = "00"
-        tv_sec.text = "00"
+        lapLayout.removeAllViews()
+        tv_hour.text = "0"
+        tv_min.text = "0"
+        tv_sec.text = "0"
         tv_milli.text = "00"
         lap = 1;
+    }
+
+    private fun recordLap() {
+        val laptime = this.time
+
+        val textView = TextView(this)
+        val string =
+            "$lap LAP : ${laptime / 100 / 3600}:${laptime / 100 / 60}:${laptime / 100}.${laptime % 100}"
+        textView.text=string
+        lapLayout.addView(textView,0)
+        lap++
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        bt_start.setOnClickListener {
+            if(!checkRunning)
+                start()
+            else
+                pause()
+            checkRunning = !checkRunning
+        }
+
+        bt_lap.setOnClickListener {
+            recordLap()
+        }
+
+        bt_reset.setOnClickListener {
+            reset()
+        }
     }
 }
