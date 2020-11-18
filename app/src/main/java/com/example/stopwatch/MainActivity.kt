@@ -25,10 +25,10 @@ class MainActivity : AppCompatActivity() {
             val milli = time % 100
 
             runOnUiThread {
-                tv_hour.text = "$hour"
-                tv_min.text = "$min"
-                tv_sec.text = "$sec"
-                tv_milli.text = "$milli"
+                tv_hour.text = "${hour / 10}${hour % 10}"
+                tv_min.text = "${min / 10}${min % 10}"
+                tv_sec.text = "${sec / 10}${sec % 10}"
+                tv_milli.text = "${milli / 10}${milli % 10}"
             }
         }
     }
@@ -44,9 +44,9 @@ class MainActivity : AppCompatActivity() {
 
         time = 0
         lapLayout.removeAllViews()
-        tv_hour.text = "0"
-        tv_min.text = "0"
-        tv_sec.text = "0"
+        tv_hour.text = "00"
+        tv_min.text = "00"
+        tv_sec.text = "00"
         tv_milli.text = "00"
         lap = 1;
     }
@@ -56,9 +56,9 @@ class MainActivity : AppCompatActivity() {
 
         val textView = TextView(this)
         val string =
-            "$lap LAP : ${laptime / 100 / 3600}:${laptime / 100 / 60}:${laptime / 100}.${laptime % 100}"
-        textView.text=string
-        lapLayout.addView(textView,0)
+            "$lap LAP : ${laptime / 100 / 3600}:${laptime / 100 / 60}:${laptime / 100 / 10}${laptime / 100 % 10}.${laptime % 100 / 10}${laptime % 100 % 10}"
+        textView.text = string
+        lapLayout.addView(textView, 0)
         lap++
     }
 
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         bt_start.setOnClickListener {
-            if(!checkRunning)
+            if (!checkRunning)
                 start()
             else
                 pause()
